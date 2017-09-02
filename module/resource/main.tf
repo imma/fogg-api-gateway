@@ -35,3 +35,7 @@ resource "aws_api_gateway_integration" "fn" {
 output "resource" {
   value = "${aws_api_gateway_resource.fn.id}"
 }
+
+output "method" {
+  value = "${aws_api_gateway_method.fn.id}"
+}
