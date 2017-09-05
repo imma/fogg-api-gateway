@@ -12,6 +12,10 @@ resource "aws_lambda_function" "fn" {
   runtime          = "python3.6"
   source_code_hash = "${base64sha256(file("${var.deployment_zip}"))}"
   publish          = true
+
+  lifecycle {
+    ignore_changes = ["filename"]
+  }
 }
 
 resource "aws_lambda_permission" "fn" {
