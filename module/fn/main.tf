@@ -1,5 +1,10 @@
 variable "function_name" {}
 variable "function_arn" {}
+
+variable "function_version" {
+  default = ""
+}
+
 variable "unique_prefix" {}
 variable "source_arn" {}
 
@@ -14,7 +19,7 @@ variable "fn_prod" {
 resource "aws_lambda_alias" "prod" {
   name             = "prod"
   function_name    = "${var.function_arn}"
-  function_version = "${var.fn_prod}"
+  function_version = "${coalesce(var.function_version,var.fn_prod)}"
 }
 
 resource "aws_lambda_alias" "dev" {
