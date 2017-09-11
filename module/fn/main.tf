@@ -1,9 +1,7 @@
 variable "function_name" {}
+variable "function_arn" {}
 variable "unique_prefix" {}
 variable "source_arn" {}
-variable "role" {}
-variable "deployment_zip" {}
-variable "fn_arn" {}
 
 variable "fn_dev" {
   default = "$LATEST"
@@ -15,13 +13,13 @@ variable "fn_prod" {
 
 resource "aws_lambda_alias" "prod" {
   name             = "prod"
-  function_name    = "${var.fn_arn}"
+  function_name    = "${var.function_arn}"
   function_version = "${var.fn_prod}"
 }
 
 resource "aws_lambda_alias" "dev" {
   name             = "dev"
-  function_name    = "${var.fn_arn}"
+  function_name    = "${var.function_arn}"
   function_version = "${var.fn_dev}"
 }
 
