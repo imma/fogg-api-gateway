@@ -14,12 +14,19 @@ resource "aws_lambda_function" "fn" {
   publish          = true
 }
 
+resource "aws_lambda_alias" "prod" {
+  name             = "prod"
+  function_name    = "${aws_lambda_function.fn.function_name}"
+  function_version = "$LATEST"
+}
+
 resource "aws_lambda_permission" "fn" {
   statement_id  = "${var.unique_prefix}-${var.function_name}"
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
-  function_name = "${aws_lambda_function.fn.function_name}"
+  function_name = "${aws_lambda_alias.fn.name}"
   source_arn    = "${var.source_arn}"
+  qualifier     = "${aws_lambda_alias.prod.name}"
 }
 
 output "invoke_arn" {
