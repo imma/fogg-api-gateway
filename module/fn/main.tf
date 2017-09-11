@@ -32,7 +32,7 @@ resource "aws_lambda_permission" "prod" {
   statement_id  = "${var.unique_prefix}-${var.function_name}"
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
-  function_name = "${aws_lambda_alias.fn.name}"
+  function_name = "${var.function_name}"
   source_arn    = "${var.source_arn}"
   qualifier     = "${aws_lambda_alias.prod.name}"
 }
@@ -41,7 +41,7 @@ resource "aws_lambda_permission" "dev" {
   statement_id  = "${var.unique_prefix}-${var.function_name}"
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
-  function_name = "${aws_lambda_alias.fn.name}"
+  function_name = "${var.function_name}"
   source_arn    = "${var.source_arn}"
   qualifier     = "${aws_lambda_alias.dev.name}"
 }
