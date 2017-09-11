@@ -1,5 +1,6 @@
 variable "function_name" {}
 variable "function_arn" {}
+variable "invoke_arn" {}
 
 variable "function_version" {
   default = ""
@@ -47,5 +48,5 @@ resource "aws_lambda_permission" "dev" {
 }
 
 output "invoke_arn" {
-  value = "${aws_lambda_function.fn.invoke_arn}"
+  value = "${var.invoke_arn}"
 }
