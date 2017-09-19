@@ -1,6 +1,5 @@
 variable "function_name" {}
 variable "function_arn" {}
-variable "invoke_arn" {}
 
 variable "function_version" {
   default = ""
@@ -9,44 +8,48 @@ variable "function_version" {
 variable "unique_prefix" {}
 variable "source_arn" {}
 
-variable "fn_dev" {
+variable "fn_rc" {
   default = "$LATEST"
 }
 
-variable "fn_prod" {
+variable "fn_live" {
   default = "$LATEST"
 }
 
-resource "aws_lambda_alias" "prod" {
-  name             = "prod"
+resource "aws_lambda_alias" "live" {
+  name             = "live"
   function_name    = "${var.function_arn}"
-  function_version = "${coalesce(var.function_version,var.fn_prod)}"
+  function_version = "${coalesce(var.function_version,var.fn_live)}"
 }
 
-resource "aws_lambda_alias" "dev" {
-  name             = "dev"
+resource "aws_lambda_alias" "rc" {
+  name             = "rc"
   function_name    = "${var.function_arn}"
-  function_version = "${var.fn_dev}"
+  function_version = "${var.fn_rc}"
 }
 
-resource "aws_lambda_permission" "prod" {
+resource "aws_lambda_permission" "live" {
   statement_id  = "${var.unique_prefix}-${var.function_name}"
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
   function_name = "${var.function_name}"
   source_arn    = "${var.source_arn}"
-  qualifier     = "${aws_lambda_alias.prod.name}"
+  qualifier     = "${aws_lambda_alias.live.name}"
 }
 
-resource "aws_lambda_permission" "dev" {
+resource "aws_lambda_permission" "rc" {
   statement_id  = "${var.unique_prefix}-${var.function_name}"
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
   function_name = "${var.function_name}"
   source_arn    = "${var.source_arn}"
-  qualifier     = "${aws_lambda_alias.dev.name}"
+  qualifier     = "${aws_lambda_alias.rc.name}"
 }
 
-output "invoke_arn" {
-  value = "${var.invoke_arn}"
+output "live_arn" {
+  value = "${aws_lambda_alias.live.arn}"
+}
+
+output "rc_arn" {
+  value = "${aws_lambda_alias.rc.arn}"
 }
