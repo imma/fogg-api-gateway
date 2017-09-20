@@ -28,10 +28,20 @@ resource "aws_lambda_alias" "rc" {
   function_version = "${var.fn_rc}"
 }
 
-resource "aws_lambda_permission" "latest" {
+resource "aws_lambda_permission" "live" {
   statement_id  = "${var.unique_prefix}-${var.function_name}"
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
   function_name = "${var.function_name}"
   source_arn    = "${var.source_arn}"
+  qualifier     = "${aws_lambda_alias.live.name}"
+}
+
+resource "aws_lambda_permission" "rc" {
+  statement_id  = "${var.unique_prefix}-${var.function_name}"
+  action        = "lambda:InvokeFunction"
+  principal     = "apigateway.amazonaws.com"
+  function_name = "${var.function_name}"
+  source_arn    = "${var.source_arn}"
+  qualifier     = "${aws_lambda_alias.rc.name}"
 }
