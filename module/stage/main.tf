@@ -1,6 +1,7 @@
 variable "rest_api_id" {}
 variable "stage_name" {}
 variable "domain_name" {}
+variable "anchor" {}
 
 resource "aws_api_gateway_deployment" "stage" {
   rest_api_id = "${var.rest_api_id}"
@@ -30,4 +31,8 @@ resource "aws_api_gateway_base_path_mapping" "stage" {
   stage_name  = "${var.stage_name}"
   domain_name = "${var.domain_name}"
   base_path   = "${var.stage_name}"
+}
+
+output "deployment" {
+  value = "${aws_api_gateway_deployment.stage.id}"
 }
