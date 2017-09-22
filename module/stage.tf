@@ -12,6 +12,7 @@ resource "aws_api_gateway_deployment" "stage" {
 }
 
 resource "aws_api_gateway_base_path_mapping" "stage" {
+  depends_on  = ["aws_api_gateway_deployment.stage"]
   api_id      = "${var.rest_api_id}"
   stage_name  = "${var.stage_name}"
   domain_name = "${var.domain_name}"
