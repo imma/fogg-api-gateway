@@ -30,6 +30,10 @@ resource "aws_lambda_alias" "rc" {
   name             = "rc"
   function_name    = "${var.function_arn}"
   function_version = "${var.fn_rc}"
+
+  lifecycle {
+    ignore_changes = ["function_version"]
+  }
 }
 
 resource "aws_lambda_permission" "live" {
