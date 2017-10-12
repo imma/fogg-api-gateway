@@ -24,7 +24,7 @@ resource "aws_api_gateway_method" "fn" {
 resource "aws_api_gateway_resource" "fn_catch_all" {
   rest_api_id = "${var.rest_api_id}"
   parent_id   = "${aws_api_gateway_resource.fn.id}"
-  path_part   = "{catch_all+}"
+  path_part   = "{ps+}"
 }
 
 resource "aws_api_gateway_method" "fn_catch_all" {
