@@ -37,19 +37,21 @@ resource "aws_lambda_alias" "rc" {
 }
 
 resource "aws_lambda_permission" "live" {
+  depends_on    = ["aws_lambda_alias.live"]
   statement_id  = "${var.unique_prefix}-${var.function_name}"
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
   function_name = "${var.function_name}"
   source_arn    = "${var.source_arn}"
-  qualifier     = "${aws_lambda_alias.live.name}"
+  qualifier     = "live"
 }
 
 resource "aws_lambda_permission" "rc" {
+  depends_on    = ["aws_lambda_alias.rc"]
   statement_id  = "${var.unique_prefix}-${var.function_name}"
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
   function_name = "${var.function_name}"
   source_arn    = "${var.source_arn}"
-  qualifier     = "${aws_lambda_alias.rc.name}"
+  qualifier     = "rc"
 }
