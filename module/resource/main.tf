@@ -1,8 +1,11 @@
 variable "api_name" {}
 variable "rest_api_id" {}
 variable "resource_id" {}
-variable "http_method" {}
 variable "invoke_arn" {}
+
+variable "http_method" {
+  default = "POST"
+}
 
 resource "aws_api_gateway_resource" "fn" {
   rest_api_id = "${var.rest_api_id}"
